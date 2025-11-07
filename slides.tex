@@ -1,0 +1,136 @@
+\documentclass{beamer}
+\usepackage[utf8]{vietnam}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\usetheme{Madrid}
+\usecolortheme{whale}
+
+\title{Đánh giá hiệu năng mã hóa dòng (ChaCha20) và mã hóa khối (AES-CTR)}
+\author{Nhóm nghiên cứu}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Nội dung}
+\tableofcontents
+\end{frame}
+
+\section{Giới thiệu}
+
+\begin{frame}{Tổng quan}
+\begin{itemize}
+\item ChaCha20: Mã hóa dòng hiện đại
+\begin{itemize}
+\item Thiết kế bởi Daniel J. Bernstein (2008)
+\item Cải tiến từ Salsa20
+\end{itemize}
+\item AES-CTR: Mã hóa khối ở chế độ Counter
+\begin{itemize}
+\item Tiêu chuẩn mã hóa tiên tiến (AES)
+\item Chế độ CTR biến AES thành mã hóa dòng
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Phương pháp nghiên cứu}
+
+\begin{frame}{Môi trường thử nghiệm}
+\begin{itemize}
+\item Ngôn ngữ: Python 3
+\item Thư viện:
+\begin{itemize}
+\item pycryptodome cho AES
+\item Cài đặt tự phát triển cho ChaCha20
+\end{itemize}
+\item Kích thước file test: 1MB, 10MB, 50MB
+\item Dữ liệu: Ngẫu nhiên (os.urandom)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Quy trình đánh giá}
+\begin{enumerate}
+\item Tạo dữ liệu ngẫu nhiên
+\item Đo thời gian mã hóa
+\item Tính toán throughput
+\item So sánh kết quả
+\item Vẽ biểu đồ phân tích
+\end{enumerate}
+\end{frame}
+
+\section{Kết quả}
+
+\begin{frame}{Thời gian mã hóa}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{chacha20_performance.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Throughput}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{aes_ctr_performance.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Phân tích ChaCha20}
+\begin{itemize}
+\item Ưu điểm:
+\begin{itemize}
+\item Hiệu năng tốt với dữ liệu lớn
+\item Không yêu cầu bảng tra cứu
+\item Dễ cài đặt và tối ưu
+\end{itemize}
+\item Nhược điểm:
+\begin{itemize}
+\item Hiệu năng không ổn định với file nhỏ
+\item Không có hỗ trợ phần cứng phổ biến
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Phân tích AES-CTR}
+\begin{itemize}
+\item Ưu điểm:
+\begin{itemize}
+\item Hiệu năng ổn định
+\item Hỗ trợ phần cứng (AES-NI)
+\item Tiêu chuẩn được công nhận
+\end{itemize}
+\item Nhược điểm:
+\begin{itemize}
+\item Yêu cầu bảng tra cứu S-box
+\item Phụ thuộc vào hỗ trợ phần cứng
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Kết luận}
+
+\begin{frame}{Khuyến nghị sử dụng}
+\begin{itemize}
+\item Sử dụng ChaCha20 khi:
+\begin{itemize}
+\item Xử lý file lớn
+\item Không có hỗ trợ phần cứng đặc biệt
+\item Cần hiệu năng cao trên phần cứng đa dạng
+\end{itemize}
+\item Sử dụng AES-CTR khi:
+\begin{itemize}
+\item Cần hiệu năng ổn định
+\item Có hỗ trợ phần cứng AES
+\item Tuân thủ tiêu chuẩn bắt buộc
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Câu hỏi?}
+\begin{center}
+\Huge Cảm ơn đã lắng nghe!
+\end{center}
+\end{frame}
+
+\end{document}
