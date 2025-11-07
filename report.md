@@ -159,39 +159,43 @@ erDiagram
 
 ##### a) ChaCha20
 
-![ChaCha20 UI Tab 1](photos/chacha20_ui_1.png)
-
-**Mô tả:** Tab thông tin thuật toán ChaCha20
-
-- Hiển thị thông số kỹ thuật của thuật toán
-- Giải thích về cấu trúc và hoạt động
-- Các thông số an toàn và giới hạn
-
-![ChaCha20 UI Tab 2](photos/chacha20_ui_2.png)
+![ChaCha20 Demo UI](photos/chacha20_ui_1.png)
 
 **Mô tả:** Tab demo mã hóa/giải mã ChaCha20
 
-- Cho phép nhập văn bản để mã hóa
-- Hiển thị kết quả mã hóa dạng hex
-- Chức năng giải mã để kiểm tra
+- Nhập văn bản để mã hóa
+- Hiển thị kết quả mã hóa dưới dạng hex
+- Hiển thị key và nonce được sử dụng
+- Tự động giải mã để kiểm tra kết quả
+
+![ChaCha20 Benchmark UI](photos/chacha20_ui_2.png)
+
+**Mô tả:** Tab benchmark hiệu năng ChaCha20 
+
+- Cho phép nhập các kích thước file test (MB)
+- Hiển thị thời gian mã hóa và throughput cho mỗi kích thước
+- Vẽ biểu đồ so sánh và lưu vào `data/chacha20_performance.png`
+- Có progress bar hiển thị tiến trình benchmark
 
 ##### b) AES-CTR
 
-![AES-CTR UI Tab 1](photos/aes_ctr_ui_1.png)
-
-**Mô tả:** Tab thông tin thuật toán AES-CTR
-
-- Thông số kỹ thuật của AES
-- Giải thích về chế độ CTR
-- Các đặc điểm an toàn
-
-![AES-CTR UI Tab 2](photos/aes_ctr_ui_2.png)
+![AES-CTR Demo UI](photos/aes_ctr_ui_1.png)
 
 **Mô tả:** Tab demo mã hóa/giải mã AES-CTR
 
-- Giao diện nhập liệu trực quan
-- Hiển thị kết quả theo thời gian thực
-- Tích hợp chức năng kiểm tra tính toàn vẹn
+- Input text để mã hóa với AES-CTR mode
+- Hiển thị kết quả mã hóa dạng hex
+- Hiển thị key (16 bytes) và nonce (8 bytes)
+- Tự động giải mã để verify kết quả
+
+![AES-CTR Benchmark UI](photos/aes_ctr_ui_2.png)
+
+**Mô tả:** Tab benchmark hiệu năng AES-CTR
+
+- Nhập danh sách kích thước file để test
+- Chạy mỗi test 3 lần và lấy thời gian trung bình
+- Vẽ biểu đồ thời gian và throughput theo kích thước
+- Lưu kết quả vào `data/aes_ctr_performance.png`
 
 #### 4.2.2. Kết quả benchmark
 
