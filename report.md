@@ -159,6 +159,24 @@ erDiagram
 
 ##### a) ChaCha20
 
+![ChaCha20 Code Review](photos/chacha20_code.png)
+
+**Code Review ChaCha20:**
+
+- Cài đặt thuật toán ChaCha20 từ đầu theo đặc tả gốc
+- Triển khai các hàm chính:
+  - `__init__`: Khởi tạo state matrix với key và nonce
+  - `quarter_round`: Thực hiện phép biến đổi ARX cơ bản
+  - `block_function`: 20 vòng mã hóa (10 vòng đôi)
+  - `encrypt`/`decrypt`: Mã hóa/giải mã bằng XOR với keystream
+- Tính năng benchmark:
+  - Đo thời gian qua 3 lần chạy
+  - Tạo dữ liệu test ngẫu nhiên
+  - Tính toán và vẽ biểu đồ kết quả
+- Giao diện người dùng:
+  - 3 tab: Info, Demo, Benchmark
+  - Xử lý lỗi và hiển thị progress
+
 ![ChaCha20 Demo UI](photos/chacha20_ui_1.png)
 
 **Mô tả:** Tab demo mã hóa/giải mã ChaCha20
@@ -178,6 +196,25 @@ erDiagram
 - Có progress bar hiển thị tiến trình benchmark
 
 ##### b) AES-CTR
+
+![AES-CTR Code Review](photos/aes_ctr_code.png)
+
+**Code Review AES-CTR:**
+
+- Sử dụng thư viện pycryptodome cho AES:
+  - `AES.new()`: Khởi tạo cipher với mode CTR
+  - `Counter.new()`: Tạo bộ đếm 64-bit với nonce
+  - `encrypt`/`decrypt`: Sử dụng AES-CTR mode
+- Chức năng benchmark:
+  - Warm-up để tối ưu JIT
+  - Benchmark với nhiều kích thước file
+  - Ghi nhận thời gian và throughput
+  - Tự động giải phóng bộ nhớ
+- Giao diện:
+  - Thiết kế tương tự ChaCha20
+  - Hiển thị thông tin AES-CTR
+  - Progress bar cho benchmark
+  - Export kết quả dạng biểu đồ
 
 ![AES-CTR Demo UI](photos/aes_ctr_ui_1.png)
 
