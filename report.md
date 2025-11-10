@@ -6,8 +6,9 @@
 
 Trong báo cáo này, chúng tôi tiến hành so sánh và đánh giá hiệu năng của hai thuật toán mã hóa hiện đại:
 
-- **ChaCha20**: Thuật toán mã hóa dòng hiện đại, được thiết kế bởi Daniel J. Bernstein (2008)
-- **AES-CTR**: Thuật toán mã hóa khối AES hoạt động ở chế độ Counter, tiêu chuẩn NIST (2001)
+- **ChaCha20**: Thuật toán mã hóa dòng hiện đại, được thiết kế bởi Daniel J. Bernstein (2008). Phiên bản IETF của ChaCha20 sử dụng *khóa 256-bit, nonce 96-bit và counter 32-bit*; mỗi cặp key/nonce mã hóa tối đa *2³² khối 64 byte (~256 GB)*. Việc *tái sử dụng nonce* với cùng khóa dẫn tới rò rỉ keystream và phá vỡ an toàn.
+
+- **AES-CTR**: Thuật toán mã hóa khối AES hoạt động ở chế độ Counter, tiêu chuẩn NIST (2001). Trong CTR mode, *mỗi cặp (key, nonce/counter) phải duy nhất*. Reuse IV/nonce sẽ làm hai bản rõ bị XOR lộ nhau. AES-CTR sử dụng khóa 128-bit và nonce+counter 128-bit (thường chia thành 64-bit nonce + 64-bit counter).
 
 ### 1.2. Mục tiêu nghiên cứu
 
@@ -126,15 +127,24 @@ erDiagram
 ### 3.2. Thiết kế thử nghiệm
 
 1. **Khởi tạo dữ liệu**:
-   - Kích thước: 1MB, 10MB, 50MB
+   - Kích thước: 1MB, 10MB, 50MB, 100MB
    - Dữ liệu ngẫu nhiên từ os.urandom()
    - Khóa và nonce ngẫu nhiên cho mỗi lần chạy
+   - Dữ liệu được sinh và xử lý hoàn toàn trong RAM để loại trừ I/O
 
 2. **Quy trình benchmark**:
-   - Warm-up để tránh ảnh hưởng JIT
-   - 3 lần chạy cho mỗi kích thước
-   - Lấy giá trị trung bình
+   - Mỗi kích thước file được *mã hóa và giải mã* độc lập
+   - 10 lần lặp cho mỗi kích thước
+   - Tính giá trị trung bình và độ lệch chuẩn
    - Ghi nhận thời gian và throughput
+
+3. **Cấu hình thử nghiệm**:
+   - CPU: Intel Core i5-1135G7 @ 2.40GHz
+   - AES-NI: Có hỗ trợ
+   - RAM: 16GB DDR4
+   - OS: Windows 11 Pro 64-bit
+   - Python 3.12.0
+   - Thư viện: pycryptodome 3.19.0
 
 3. **Giao diện**:
    - Tab thông tin thuật toán
@@ -343,19 +353,21 @@ erDiagram
    - Tận dụng tính năng phần cứng
    - Cân nhắc song song hóa với dữ liệu lớn
 
-### 5.3. Hướng phát triển
+### 5.3. Hạn chế và hướng phát triển
 
-1. **Nghiên cứu:**
-   - Đánh giá trên nhiều nền tảng
-   - So sánh với các thuật toán khác
-   - Phân tích chi tiết về bảo mật
+1. **Hạn chế hiện tại:**
+   - Chưa đo trên ARM/thiết bị di động
+   - Chưa khảo sát tiêu thụ năng lượng
+   - Trước đây dùng *số liệu minh họa* — bản này đã thay bằng *đo thực tế*
+   - Chưa phân tích chi tiết về side-channel attacks
 
-2. **Phát triển:**
-   - Tối ưu hóa mã nguồn
-   - Thêm tính năng GUI
-   - Hỗ trợ nhiều format dữ liệu
+2. **Hướng phát triển:**
+   - Đánh giá trên nhiều nền tảng (x86, ARM, RISC-V)
+   - Mở rộng benchmark với các thư viện khác
+   - Đo đạc tiêu thụ năng lượng và hiệu năng cache
+   - Phân tích bảo mật chuyên sâu
 
-3. **Ứng dụng:**
-   - Tích hợp vào các framework
-   - Xây dựng API
-   - Phát triển công cụ benchmark
+3. **Ứng dụng thực tế:**
+   - Tích hợp vào các framework web/mobile
+   - Xây dựng API tự động benchmark
+   - Phát triển công cụ so sánh mật mã học
